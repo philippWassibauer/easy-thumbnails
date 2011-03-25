@@ -19,7 +19,11 @@ class FileManager(models.Manager):
             try:
                 object = self.get(**kwargs)
             except self.model.DoesNotExist:
-                return
+                # in case it was saved multiple times get first
+                try:
+                    object = self.filter(**kwargs)[0]
+                except:
+                    return
             created = False
         if update_modified and object and not created:
             if object.modified != update_modified:
