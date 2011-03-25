@@ -18,7 +18,7 @@ class FileManager(models.Manager):
             kwargs.pop('defaults', None)
             try:
                 object = self.get(**kwargs)
-            except self.model.DoesNotExist:
+            except:
                 # in case it was saved multiple times get first
                 try:
                     object = self.filter(**kwargs)[0]
