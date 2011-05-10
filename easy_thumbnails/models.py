@@ -13,7 +13,15 @@ class FileManager(models.Manager):
             if update_modified:
                 defaults = kwargs.setdefault('defaults', {})
                 defaults['modified'] = update_modified
-            object, created = self.get_or_create(**kwargs)
+            try:
+                object, created = self.get_or_create(**kwargs)
+            except:
+                # in case it was saved multiple times get first
+                try:
+                    object = self.filter(**kwargs)[0]
+                    created = False
+                except:
+                    return
         else:
             kwargs.pop('defaults', None)
             try:
